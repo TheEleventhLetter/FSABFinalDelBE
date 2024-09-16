@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
-import dotevn from "dotevn";
+import dotevn from "dotenv";
 dotevn.config();
-import { db } from "./util/FirebaseInit";
-import { collection, getDocts, addDoc } from "firebase/firestore";
+import { db } from "./util/FirebaseInit.js";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const app = express();
 const port = 8080;
@@ -23,7 +23,7 @@ app.get("/locationsVisited", async(req, res) => {
     const collectionRef = collection(db, "Visited");
     const collectionSnap = await getDocs(collectionRef);
     const docs = []
-    collectionSnap.foreEach((doc) => {
+    collectionSnap.forEach((doc) => {
         docs.push(doc.data())
     });
     res.send(docs);
@@ -63,6 +63,10 @@ app.post("/locationsToVisit", async(req, res) => {
     res.status(200).send("Succesfully Added Location")
 });
 
-app.listen(port, () => {
-    console.log("Listening on port", port);
-});
+function start() {
+    app.listen(port, () => {
+        console.log("Listening on port", port);
+    });
+}
+
+start();
