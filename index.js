@@ -29,38 +29,60 @@ app.get("/locationsVisited", async(req, res) => {
     res.send(docs);
 });
 
-app.post("/locationsVisited", async(req, res) => {
-    const locationRef = collection(db, "Visited");
-    const locationBody = req.body;
+
+app.get("/locationsVisitedComments", async(req, res) => {
+    const collectionRef = collection(db, "VisitedComments");
+    const collectionSnap = await getDocs(collectionRef);
+    const docs = []
+    collectionSnap.forEach((doc) => {
+        docs.push(doc.data())
+    });
+    res.send(docs);
+})
+
+app.post("/locationsVisitedComments", async(req, res) => {
+    const commentRef = collection(db, "VisitedComments");
+    const commentBody = req.body;
     try {
-        await addDoc(locationRef, locationBody);
+        console.log(commentBody);
+        await addDoc(commentRef, commentBody);
     } catch (e) {
         console.error(e);
         res.status(500);
     }
-    res.status(200).send("Succesfully Added Location")
+    res.status(200).send("Succesfully Added Comment");
 });
 
 app.get("/locationsToVisit", async(req, res) => {
     const collectionRef = collection(db, "ToVisit");
     const collectionSnap = await getDocs(collectionRef);
     const docs = []
-    collectionSnap.foreEach((doc) => {
+    collectionSnap.forEach((doc) => {
         docs.push(doc.data())
     });
     res.send(docs);
 });
 
-app.post("/locationsToVisit", async(req, res) => {
-    const locationRef = collection(db, "ToVisit");
-    const locationBody = req.body;
+app.get("/locationsToVisitComments", async(req, res) => {
+    const collectionRef = collection(db, "ToVisitComments");
+    const collectionSnap = await getDocs(collectionRef);
+    const docs = []
+    collectionSnap.forEach((doc) => {
+        docs.push(doc.data())
+    });
+    res.send(docs);
+});
+
+app.post("/locationsToVisitComments", async(req, res) => {
+    const commentRef = collection(db, "ToVisitComments");
+    const commentBody = req.body;
     try {
-        await addDoc(locationRef, locationBody);
+        await addDoc(commentRef, commentBody);
     } catch (e) {
         console.error(e);
         res.status(500);
     }
-    res.status(200).send("Succesfully Added Location")
+    res.status(200).send("Succesfully Added Comment")
 });
 
 function start() {
